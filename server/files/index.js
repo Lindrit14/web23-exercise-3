@@ -15,7 +15,7 @@ class ListBuilder extends ParentChildBuilder {
 class ButtonBuilder extends ParentChildBuilder{
   constructor(){
     super("button")
-  }
+  } 
 }
 
 function formatRuntime(runtime) {
@@ -68,17 +68,17 @@ function loadMovies(genre) {
 
   const url = new URL("/movies", location.href)
   /* Task 1.4. Add query parameter to the url if a genre is given */
-
+  console.log("this is the href: " + location.href )
   
   let params = new URLSearchParams(url.search);
-  
+
 
   params.set("genre", genre)
 
   console.log(params.toString())
  
 
-  xhr.open("GET", url)
+  xhr.open("GET", "/movies")
   xhr.send()
 }
 

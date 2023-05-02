@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const movieModel = require('./movie-model.js');
+const { moveCursor } = require('readline');
 
 const app = express();
 
@@ -15,7 +16,7 @@ app.use(express.static(path.join(__dirname, 'files')));
    This endpoint returns a sorted array of all the genres of the movies
    that are currently in the movie model.
 */
-
+ 
 app.get("/genres", (req, res)=>{
   let genreArray = [];
   let array = []; 
@@ -39,16 +40,25 @@ app.get("/genres", (req, res)=>{
  */
    app.get('/movies', function (req, res) {
     let movies = Object.values(movieModel);
-    
-  
+    let moviesGenres = [];
+
     if (req.query.genre) {
-      const genre = req.query.genre.toLowerCase()
-  
-      movies = movies.filter(movie => movie.Genres.toLowerCase() === genre);
+      const genre = req.query.genre 
+      // du vergelicvhste ein array mit einem string und versuchen zu schauen ob in genres der req query drinnen ist 
+      movies.forEach(movie =>{
+        if(movie.Genres.includes(genre)){
+          moviesGenres.push(movie)
+          
+        }else{
+          console.log("array could not be filled")
+        }
+      })
+      res.send(moviesGenres)
     }
+     console.log(req.query.genre)
 
     res.send(movies);
-  });
+  })
   
 
 // Configure a 'get' endpoint for a specific movie
