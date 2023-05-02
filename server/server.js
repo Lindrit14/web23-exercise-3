@@ -44,20 +44,15 @@ app.get("/genres", (req, res)=>{
 
     if (req.query.genre) {
       const genre = req.query.genre 
-      // du vergelicvhste ein array mit einem string und versuchen zu schauen ob in genres der req query drinnen ist 
       movies.forEach(movie =>{
         if(movie.Genres.includes(genre)){
           moviesGenres.push(movie)
-          
-        }else{
-          console.log("array could not be filled")
         }
       })
       res.send(moviesGenres)
+    }else{
+      res.send(movies);
     }
-     console.log(req.query.genre)
-
-    res.send(movies);
   })
   
 

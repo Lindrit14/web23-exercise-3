@@ -12,11 +12,6 @@ class ListBuilder extends ParentChildBuilder {
   }
 }
 
-class ButtonBuilder extends ParentChildBuilder{
-  constructor(){
-    super("button")
-  } 
-}
 
 function formatRuntime(runtime) {
   const hours = Math.trunc(runtime / 60);
@@ -68,17 +63,18 @@ function loadMovies(genre) {
 
   const url = new URL("/movies", location.href)
   /* Task 1.4. Add query parameter to the url if a genre is given */
-  console.log("this is the href: " + location.href )
-  
+
   let params = new URLSearchParams(url.search);
-
-
   params.set("genre", genre)
 
-  console.log(params.toString())
- 
+  url.search = params.toString();
 
-  xhr.open("GET", "/movies")
+  // if(genre){
+  //   url.searchParams.set("genre", genre)
+  // }
+
+
+  xhr.open("GET", url)
   xhr.send()
 }
 
@@ -102,8 +98,7 @@ window.onload = function () {
          liAllButton.append(allButton)
          allButton.textContent = "All";
          allButton.addEventListener("click", (e)=>{
-          loadMovies(genres)
-          console.log(genres);
+          loadMovies("")
         })
 
         
