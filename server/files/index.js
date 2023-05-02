@@ -12,6 +12,12 @@ class ListBuilder extends ParentChildBuilder {
   }
 }
 
+class ButtonBuilder extends ParentChildBuilder{
+  constructor(){
+    super("button")
+  }
+}
+
 function formatRuntime(runtime) {
   const hours = Math.trunc(runtime / 60);
   const minutes = runtime % 60;
@@ -29,7 +35,7 @@ function appendMovie(movie, element) {
               "Runtime " + formatRuntime(movie.Runtime),
               "\u2022",
               "Released on " +
-                new Date(movie.Released).toLocaleDateString("en-US")))
+                new Date(movie.Released).toLocaleDateString()))
           .append(new ParagraphBuilder().childClass("genre").items(movie.Genres))
           .append(new ElementBuilder("p").text(movie.Plot))
           .append(new ElementBuilder("h2").pluralizedText("Director", movie.Directors))
@@ -63,6 +69,15 @@ function loadMovies(genre) {
   const url = new URL("/movies", location.href)
   /* Task 1.4. Add query parameter to the url if a genre is given */
 
+  
+  let params = new URLSearchParams(url.search);
+  
+
+  params.set("genre", genre)
+
+  console.log(params.toString())
+ 
+
   xhr.open("GET", url)
   xhr.send()
 }
@@ -76,7 +91,36 @@ window.onload = function () {
       /* Task 1.3. Add the genre buttons to the listElement and 
          initialize them with a click handler that calls the 
          loadMovies(...) function above. */
-      const genres = JSON.parse(xhr.responseText);
+         const genres = JSON.parse(xhr.responseText);
+
+         const liAllButton = document.createElement("li")
+         listElement.append(liAllButton)
+
+
+         const allButton = document.createElement("button")
+         allButton.setAttribute("type", "button")
+         liAllButton.append(allButton)
+         allButton.textContent = "All";
+         allButton.addEventListener("click", (e)=>{
+          loadMovies(genres)
+          console.log(genres);
+        })
+
+        
+        genres.forEach(genre =>{
+          const liButton = document.createElement("li")
+          listElement.append(liButton)
+
+          const button = document.createElement("button")
+          button.setAttribute("type", "button")
+          liButton.append(button)
+          button.textContent = genre
+          button.addEventListener("click", (e)=>{
+            loadMovies(genre)
+            console.log(genre);
+          })
+          
+        })
 
       /* When a first button exists, we click it to load all movies. */
       const firstButton = document.querySelector("nav button");
